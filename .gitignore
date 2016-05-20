@@ -1,3 +1,14 @@
+# QtCreator files
+DatasetOrganizer.config
+DatasetOrganizer.creator
+DatasetOrganizer.creator.user
+DatasetOrganizer.files
+DatasetOrganizer.includes
+
+# Building folder
+bin
+build
+
 # Compiled Object files
 *.slo
 *.lo
