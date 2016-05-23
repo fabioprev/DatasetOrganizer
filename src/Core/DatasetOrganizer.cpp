@@ -56,8 +56,6 @@ void DatasetOrganizer::exec(const string& directory)
 		
 		Utils::PatientClass patientClass = Utils::readPatientFile(*it);
 		
-		WARN("File: " << *it << endl);
-		
 		patient = "";
 		
 		temp = it->substr(it->find("_") + 1);
@@ -75,9 +73,6 @@ void DatasetOrganizer::exec(const string& directory)
 			temp2 = temp;
 		}
 		
-		cerr << "Old Patient: " << oldPatient << endl;
-		cerr << "Patient: " << patient << endl;
-		
 		if (patient != oldPatient)
 		{
 			oldPatient = patient;
@@ -87,7 +82,5 @@ void DatasetOrganizer::exec(const string& directory)
 		}
 		
 		if (system((string("mv ") + *it + string(" ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + Utils::getPatientString(patientClass)).c_str()));
-		
-		INFO("Patient class: " << Utils::getPatientString(patientClass) << endl);
 	}
 }
