@@ -15,9 +15,10 @@ void DatasetOrganizer::exec(const string& directory)
 {
 	vector<string> xmlFiles;
 	ifstream file;
+	string oldPatient, patient;
 	char buffer[4096];
 	
-	if (system((string("ls ") + directory + string("/*.xml > .temp")).c_str()));
+	if (system((string("ls ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("*.xml > .temp")).c_str()));
 	
 	file.open(".temp");
 	
@@ -34,9 +35,58 @@ void DatasetOrganizer::exec(const string& directory)
 	
 	if (system("rm -rf .temp"));
 	
+	if (xmlFiles.empty())
+	{
+		INFO("All xml files have been classified based on their Alzheimer's class. Exiting..." << endl);
+		
+		exit(0);
+	}
+	
+	if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("AD")).c_str()));
+	if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("MCI")).c_str()));
+	if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("LMCI")).c_str()));
+	if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("Normal")).c_str()));
+	
+	oldPatient = "";
+	patient = "";
+	
 	for (vector<string>::const_iterator it = xmlFiles.begin(); it != xmlFiles.end(); ++it)
 	{
+		string temp, temp2;
+		
 		Utils::PatientClass patientClass = Utils::readPatientFile(*it);
+		
+		WARN("File: " << *it << endl);
+		
+		patient = "";
+		
+		temp = it->substr(it->find("_") + 1);
+		temp2 = it->substr(it->find("_") + 1);
+		
+		for (int i = 0; i < 3; ++i)
+		{
+			temp = temp.substr(0,temp.find("_"));
+			
+			patient += temp;
+			
+			if (i < 2) patient += "_";
+			
+			temp = temp2.substr(temp2.find("_") + 1);
+			temp2 = temp;
+		}
+		
+		cerr << "Old Patient: " << oldPatient << endl;
+		cerr << "Patient: " << patient << endl;
+		
+		if (patient != oldPatient)
+		{
+			oldPatient = patient;
+			
+			if (system((string("mv ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + patient + string(" ") + directory +
+				((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + Utils::getPatientString(patientClass)).c_str()));
+		}
+		
+		if (system((string("mv ") + *it + string(" ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + Utils::getPatientString(patientClass)).c_str()));
 		
 		INFO("Patient class: " << Utils::getPatientString(patientClass) << endl);
 	}
