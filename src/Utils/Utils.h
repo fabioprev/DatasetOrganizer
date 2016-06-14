@@ -27,7 +27,7 @@ class Utils
 			AD = 0,
 			MCI,
 			LMCI,
-			Normal,
+			CN,
 			Unknown
 		};
 		
@@ -43,7 +43,7 @@ class Utils
 			if (strcmp((char*) patient,"AD") == 0) return Utils::AD;
 			else if (strcmp((char*) patient,"MCI") == 0) return Utils::MCI;
 			else if (strcmp((char*) patient,"LMCI") == 0) return Utils::LMCI;
-			else if (strcmp((char*) patient,"Normal") == 0) return Utils::Normal;
+			else if (strcmp((char*) patient,"CN") == 0) return Utils::CN;
 			else return Utils::Unknown;
 		}
 		
@@ -59,7 +59,7 @@ class Utils
 			if (patient == Utils::AD) return "AD";
 			else if (patient == Utils::MCI) return "MCI";
 			else if (patient == Utils::LMCI) return "LMCI";
-			else if (patient == Utils::Normal) return "Normal";
+			else if (patient == Utils::CN) return "CN";
 			else return "Unknown";
 		}
 		
@@ -68,7 +68,7 @@ class Utils
 		 * 
 		 * @param filename file of the patient.
 		 * 
-		 * @return the class of the patient (i.e., AD, MCI, LMCI, Normal, Unknown).
+		 * @return the class of the patient (i.e., AD, MCI, LMCI, CN, Unknown).
 		 */
 		inline static PatientClass readPatientFile(const std::string& filename)
 		{
