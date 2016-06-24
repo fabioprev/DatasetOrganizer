@@ -9,6 +9,12 @@
  */
 class DatasetOrganizer
 {
+	private:
+		/**
+		 * @brief name of the data set chosen.
+		 */
+		std::string dataset;
+		
 	public:
 		/**
 		 * @brief Empty constructor.

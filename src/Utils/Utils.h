@@ -38,6 +38,22 @@ class Utils
 		 * 
 		 * @return the class of the Alzheimer's state.
 		 */
+		inline static PatientClass getPatientClass(const std::string patient)
+		{
+			if (strcmp(patient.c_str(),"2") == 0) return Utils::AD;
+			else if (strcmp(patient.c_str(),"0.5") == 0) return Utils::MCI;
+			else if (strcmp(patient.c_str(),"1") == 0) return Utils::LMCI;
+			else if (strcmp(patient.c_str(),"0") == 0) return Utils::CN;
+			else return Utils::Unknown;
+		}
+		
+		/**
+		 * @brief Function that returns the class of the Alzheimer's state.
+		 * 
+		 * @param patient state of the patient.
+		 * 
+		 * @return the class of the Alzheimer's state.
+		 */
 		inline static PatientClass getPatientClass(const xmlChar* patient)
 		{
 			if (strcmp((char*) patient,"AD") == 0) return Utils::AD;

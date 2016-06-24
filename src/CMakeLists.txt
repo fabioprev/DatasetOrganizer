@@ -76,7 +76,7 @@ set(EXECUTABLE_OUTPUT_PATH ../bin)
 include_directories(${LIBXML2_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB_RECURSE DatasetOrganizer_src "*.cpp")
+file(GLOB_RECURSE DatasetOrganizer_src "Core/*.cpp" "Utils/*.cpp")
 
 # DatasetOrganizer executable
 add_executable(DatasetOrganizer ${DatasetOrganizer_src})
