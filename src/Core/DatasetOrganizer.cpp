@@ -91,8 +91,6 @@ void DatasetOrganizer::exec(const string& directory)
 			exit(0);
 		}
 		
-		exit(0);
-		
 		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("AD")).c_str()));
 		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("MCI")).c_str()));
 		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("LMCI")).c_str()));
