@@ -8,12 +8,15 @@ DatasetOrganizer requires the following packages to build:
   * build-essential
   * g++
   * cmake
+  * libxml2
 
 On Xubuntu (Ubuntu) 14.04.4 LTS (kernel 4.2.0-27), these dependencies are
 resolved by installing the following packages:
   
   - build-essential
   - cmake
+  - libxml2
+  - libxml2-dev
 
 # How to build
 
