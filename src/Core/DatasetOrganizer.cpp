@@ -259,8 +259,8 @@ void DatasetOrganizer::exec(const string& directory)
 				
 				s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) files.size() * 100,0);
 				
-				ERR("[" << s.str() << "%] ");
-				INFO("done.\r");
+				ERR("\r[" << s.str() << "%] ");
+				INFO("done.");
 			}
 			
 			INFO(endl);
