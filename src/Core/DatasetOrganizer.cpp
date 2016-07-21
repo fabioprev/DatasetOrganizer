@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <vector>
 
@@ -51,7 +52,9 @@ DatasetOrganizer::~DatasetOrganizer() {;}
 void DatasetOrganizer::exec(const string& directory)
 {
 	vector<string> files;
+	stringstream s;
 	ifstream file;
+	int counter;
 	char buffer[4096];
 	
 	if (strcasecmp(dataset.c_str(),"ADNI") == 0)
@@ -99,8 +102,10 @@ void DatasetOrganizer::exec(const string& directory)
 		oldPatient = "";
 		patient = "";
 		
+		counter = 0;
+		
 		for (vector<string>::const_iterator it = files.begin(); it != files.end(); ++it)
-		{
+		{	
 			string temp, temp2;
 			
 			Utils::PatientClass patientClass = Utils::readPatientFile(*it);
@@ -131,6 +136,14 @@ void DatasetOrganizer::exec(const string& directory)
 			}
 			
 			if (system((string("mv ") + *it + string(" ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + Utils::getPatientString(patientClass)).c_str()));
+			
+			s.str("");
+			s.clear();
+			
+			s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) files.size() * 100,0);
+			
+			ERR("[" << s.str() << "%] ");
+			INFO("done." << endl);
 		}
 	}
 	else if (strcasecmp(dataset.c_str(),"OASIS") == 0)
@@ -234,10 +247,20 @@ void DatasetOrganizer::exec(const string& directory)
 				if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string("/") + it2->first).c_str()));
 			}
 			
+			counter = 0;
+			
 			for (vector<string>::const_iterator it2 = files.begin(); it2 != files.end(); ++it2)
 			{
 				if (system((string("mv ") + *it2 + " " + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string("/") +
 					(it2->substr(it2->rfind("/") + 1)).substr(0,(it2->substr(it2->rfind("/") + 1)).rfind("_"))).c_str()));
+				
+				s.str("");
+				s.clear();
+				
+				s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) files.size() * 100,0);
+				
+				ERR("[" << s.str() << "%] ");
+				INFO("done." << endl);
 			}
 		}
 	}

@@ -3,6 +3,7 @@
 #include <Utils/DebugUtils.h>
 #include <libxml/xmlreader.h>
 #include <string.h>
+#include <cmath>
 #include <stdexcept>
 
 /// Macros used by the XML reader function.
@@ -141,5 +142,29 @@ class Utils
 			}
 			
 			return Utils::Unknown;
+		}
+		
+		/**
+		 * @brief Function that truncates a floating number to a specified decimal position.
+		 * 
+		 * @param d floating number to be truncated.
+		 * @param n desired decimal position.
+		 * 
+		 * @return the truncated floating number.
+		 */
+		inline static float roundN(float d, int n)
+		{
+			if (n == 0) return round(d);
+			else if (n > 0)
+			{
+				float p;
+				int temp;
+				
+				p = std::pow(10.0,n);
+				temp = (int) (d * p);
+				
+				return (((float) temp) / p);
+			}
+			else return d;
 		}
 };
