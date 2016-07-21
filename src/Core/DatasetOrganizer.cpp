@@ -58,7 +58,16 @@ void DatasetOrganizer::exec(const string& directory)
 	{
 		string oldPatient, patient;
 		
-		if (system((string("ls ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("*.xml > .temp")).c_str()));
+		if (system((string("ls ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("*.xml > .temp 2> /dev/null")).c_str()) != 0)
+		{
+			ERR("Error reading files '");
+			WARN(directory + ((directory.at(directory.size() - 1) == '/') ? "" : "/") + "*.xml");
+			ERR("'. Exiting..." << endl);
+			
+			if (system("rm -rf .temp"));
+			
+			exit(-1);
+		}
 		
 		file.open(".temp");
 		
@@ -81,6 +90,8 @@ void DatasetOrganizer::exec(const string& directory)
 			
 			exit(0);
 		}
+		
+		exit(0);
 		
 		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("AD")).c_str()));
 		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("MCI")).c_str()));
@@ -132,19 +143,21 @@ void DatasetOrganizer::exec(const string& directory)
 		string cdr, patient, temp;
 		int i;
 		
-		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("AD")).c_str()));
-		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("MCI")).c_str()));
-		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("LMCI")).c_str()));
-		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("CN")).c_str()));
-		
 		file.open((directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("oasis_longitudinal.csv")).c_str());
 		
 		if (!file.is_open())
 		{
-			ERR("Error reading file '" << directory << ((directory.at(directory.size() - 1) == '/') ? "" : "/") << "oasis_longitudinal.csv' for DatasetOrganizer configuration. Exiting..." << endl);
+			ERR("Error reading file '");
+			WARN(directory << ((directory.at(directory.size() - 1) == '/') ? "" : "/") << "oasis_longitudinal.csv");
+			ERR("' for DatasetOrganizer configuration. Exiting..." << endl);
 			
 			exit(-1);
 		}
+		
+		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("AD")).c_str()));
+		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("MCI")).c_str()));
+		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("LMCI")).c_str()));
+		if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("CN")).c_str()));
 		
 		/// We rid off the header file.
 		file.getline(buffer,4096);
@@ -230,5 +243,11 @@ void DatasetOrganizer::exec(const string& directory)
 					(it2->substr(it2->rfind("/") + 1)).substr(0,(it2->substr(it2->rfind("/") + 1)).rfind("_"))).c_str()));
 			}
 		}
+	}
+	else
+	{
+		ERR("Dataset '");
+		WARN(dataset);
+		ERR("' not supported yet." << endl);
 	}
 }
