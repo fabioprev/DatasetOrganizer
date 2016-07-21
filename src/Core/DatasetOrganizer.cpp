@@ -202,7 +202,6 @@ void DatasetOrganizer::exec(const string& directory)
 		{
 			map<string,string> patients;
 			
-			
 			if (system((string("find ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string(" -maxdepth 1 -type d > .temp")).c_str()));
 			
 			file.open(".temp");

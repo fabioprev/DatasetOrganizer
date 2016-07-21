@@ -59,7 +59,7 @@ class Utils
 			if (strcmp((char*) patient,"AD") == 0) return Utils::AD;
 			else if (strcmp((char*) patient,"MCI") == 0) return Utils::MCI;
 			else if (strcmp((char*) patient,"LMCI") == 0) return Utils::LMCI;
-			else if (strcmp((char*) patient,"CN") == 0) return Utils::CN;
+			else if (strcmp((char*) patient,"Normal") == 0) return Utils::CN;
 			else return Utils::Unknown;
 		}
 		
