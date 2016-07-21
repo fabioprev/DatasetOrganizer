@@ -261,6 +261,9 @@ void DatasetOrganizer::exec(const string& directory)
 				
 				ERR("[" << s.str() << "%] ");
 				INFO("done." << endl);
+				
+				INFO("\033[1A");
+				INFO("\033[K");
 			}
 		}
 	}
