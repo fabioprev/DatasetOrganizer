@@ -30,7 +30,10 @@ build which can be achieved by the following command sequence:
 
 # Usage
 
-In order to execute DatasetOrganizer you just need to type in to a terminal the following command:
+Before executing the program, you need to verify in the parameters.cfg the
+data set chosen. For now, the only supported data sets are ADNI and OASIS.
+In order to execute DatasetOrganizer you just need to type in to a terminal
+the following command:
 
   - cd bin
   - ./DatasetOrganizer -d \<directory-root\>
