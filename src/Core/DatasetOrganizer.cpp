@@ -145,6 +145,8 @@ void DatasetOrganizer::exec(const string& directory)
 			ERR("\r[" << s.str() << "%] ");
 			INFO("done.");
 		}
+		
+		INFO(endl);
 	}
 	else if (strcasecmp(dataset.c_str(),"OASIS") == 0)
 	{
@@ -260,7 +262,7 @@ void DatasetOrganizer::exec(const string& directory)
 				s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) files.size() * 100,0);
 				
 				ERR("\r[" << s.str() << "%] ");
-				INFO("done.");
+				INFO(*it << " done.");
 			}
 			
 			INFO(endl);
