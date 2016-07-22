@@ -154,7 +154,7 @@ void DatasetOrganizer::exec(const string& directory)
 		struct stat status;
 		stringstream s;
 		string cdr, patient, temp;
-		int i;
+		int i, size;
 		
 		file.open((directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + string("oasis_longitudinal.csv")).c_str());
 		
@@ -213,6 +213,33 @@ void DatasetOrganizer::exec(const string& directory)
 		classes.push_back("LMCI");
 		classes.push_back("MCI");
 		
+		size = 0;
+		
+		for (vector<string>::const_iterator it = classes.begin(); it != classes.end(); ++it)
+		{
+			if (system((string("find ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string(" -maxdepth 1 -type d > .temp")).c_str()));
+			
+			file.open(".temp");
+			
+			while (file.good())
+			{
+				if (file.eof()) break;
+				
+				file.getline(buffer,4096);
+				
+				if (strlen(buffer) > 0)
+				{
+					if (string(buffer).find("MR") != string::npos) ++size;
+				}
+			}
+			
+			file.close();
+			
+			if (system("rm -rf .temp"));
+		}
+		
+		counter = 0;
+		
 		for (vector<string>::const_iterator it = classes.begin(); it != classes.end(); ++it)
 		{
 			map<string,string> patients;
@@ -249,8 +276,6 @@ void DatasetOrganizer::exec(const string& directory)
 				if (system((string("mkdir -p ") + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string("/") + it2->first).c_str()));
 			}
 			
-			counter = 0;
-			
 			for (vector<string>::const_iterator it2 = files.begin(); it2 != files.end(); ++it2)
 			{
 				if (system((string("mv ") + *it2 + " " + directory + ((directory.at(directory.size() - 1) == '/') ? string("") : string("/")) + *it + string("/") +
@@ -259,14 +284,14 @@ void DatasetOrganizer::exec(const string& directory)
 				s.str("");
 				s.clear();
 				
-				s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) files.size() * 100,0);
+				s << setw(3) << setfill(' ') << Utils::roundN(counter++ / (float) size * 100,0);
 				
 				ERR("\r[" << s.str() << "%] ");
-				INFO(*it << " done.");
+				INFO(" done.");
 			}
-			
-			INFO(endl);
 		}
+		
+		INFO(endl);
 	}
 	else
 	{
